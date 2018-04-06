@@ -1,3 +1,5 @@
+require "money"
+
 class Checkout
   attr_reader :items
 
@@ -19,6 +21,13 @@ class Checkout
            end
 
     add_item(item)
+  end
+
+  def total
+  end
+
+  def subtotal
+    items.values.reduce(0) { |total, item| total + item.price }
   end
 
   private

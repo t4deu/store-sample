@@ -1,8 +1,8 @@
 class ProductsRepository
   def initialize
-    mug = Product.new("MUG", "Cafify Coffee Mug", 75)
-    tshirt = Product.new("TSHIRT", "Cabify T-Shirt", 200)
-    voucher = Product.new("VOUCHER", "Cabify Voucher", 50)
+    mug = Product.new("MUG", "Cafify Coffee Mug", 750)
+    tshirt = Product.new("TSHIRT", "Cabify T-Shirt", 2000)
+    voucher = Product.new("VOUCHER", "Cabify Voucher", 500)
 
     build_inventory(mug, tshirt, voucher)
   end
