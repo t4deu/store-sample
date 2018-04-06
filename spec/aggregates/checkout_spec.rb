@@ -1,6 +1,6 @@
 describe Checkout do
   describe "#scan" do
-    it "scan product by code" do
+    it "scans a product code" do
       checkout = Checkout.new
 
       scan_items(checkout, "VOUCHER")
@@ -36,6 +36,14 @@ describe Checkout do
 
       expect(checkout.items.size).to eq(3)
       expect(checkout.items.keys).to eq(%i{TSHIRT MUG VOUCHER})
+    end
+
+    it "only accept valid products" do
+      checkout = Checkout.new
+
+      scan_items(checkout, nil, "BED", "CAR", "JACKET")
+
+      expect(checkout.items).to be_empty
     end
   end
 

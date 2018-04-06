@@ -7,6 +7,8 @@ class Checkout
   end
 
   def scan(product_code)
+    return unless valid_product_code?(product_code)
+
     product = @product_repository.find(product_code)
     existing_item = find_item_by_product(product)
 
@@ -27,5 +29,9 @@ class Checkout
 
   def find_item_by_product(product)
     items[product.code]
+  end
+
+  def valid_product_code?(code)
+    !code.nil? && %i{TSHIRT MUG VOUCHER}.include?(code.to_sym)
   end
 end
