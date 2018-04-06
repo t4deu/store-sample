@@ -13,7 +13,7 @@ class ProductsRepository
 
   private
 
-  def build_inventory(*args)
-    @inventory = args.map { |product| [product.code, product] }.to_h
+  def build_inventory(*products)
+    @inventory = products.map { |product| [product.code, product] }.to_h
   end
 end
