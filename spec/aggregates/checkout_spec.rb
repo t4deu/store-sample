@@ -47,6 +47,41 @@ describe Checkout do
     end
   end
 
+  describe "#subtotal" do
+    it "sums the subtotal for multiple items with the same type" do
+      checkout = Checkout.new
+
+      scan_items(checkout, "TSHIRT", "TSHIRT")
+
+      expect(checkout.subtotal).to eq(4000)
+    end
+
+    it "sums the subtotal for multiple items with different types" do
+      checkout = Checkout.new
+
+      scan_items(checkout, "MUG", "TSHIRT", "VOUCHER")
+
+      expect(checkout.subtotal).to eq(3250)
+    end
+  end
+
+  describe "#items" do
+    it "returns an empty list" do
+      checkout = Checkout.new
+
+      expect(checkout.items).to be_empty
+    end
+
+    it "returns a list of checkout items" do
+      checkout = Checkout.new
+
+      scan_items(checkout, "MUG", "TSHIRT", "VOUCHER")
+
+      expect(checkout.items.size).to eq(3)
+      expect(checkout.items.values).to all(be_an(CheckoutItem))
+    end
+  end
+
   def scan_items(checkout, *product_codes)
     product_codes.each { |code| checkout.scan(code) }
   end
