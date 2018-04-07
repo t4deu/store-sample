@@ -65,6 +65,23 @@ describe Checkout do
     end
   end
 
+  describe "#total" do
+    it "sums the total when discount rule are not applicable" do
+      checkout = Checkout.new(pricin_rules)
+
+      scan_items(checkout, "VOUCHER", "TSHIRT", "MUG")
+
+      expect(checkout.total).to eq(3250)
+    end
+
+    it "sums the total when applying 2x1 discount rules" do
+      checkout = Checkout.new(pricing_rules)
+
+      scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER")
+      expect(checkout.total).to eq(2500)
+    end
+  end
+
   describe "#items" do
     it "returns an empty list" do
       checkout = Checkout.new
@@ -84,5 +101,11 @@ describe Checkout do
 
   def scan_items(checkout, *product_codes)
     product_codes.each { |code| checkout.scan(code) }
+  end
+
+  def pricing_rules
+    [
+      BuyGetFreeDiscountRule.new(:VOUCHER, buy_qty: 2, get_qty: 1),
+    ]
   end
 end

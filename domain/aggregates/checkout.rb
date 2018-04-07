@@ -1,33 +1,25 @@
 require "money"
 
 class Checkout
-  attr_reader :items
+  attr_reader :items, :subtotal, :total, :discount_rules
 
-  def initialize()
+  def initialize(discount_rules = {})
     @items = {}
+    @discount_rules = discount_rules
     @product_repository = ProductsRepository.new
   end
 
   def scan(product_code)
     return unless valid_product_code?(product_code)
 
-    product = @product_repository.find(product_code)
-    existing_item = find_item_by_product(product)
-
-    item = if existing_item
-             CheckoutItem.new(product, existing_item.quantity + 1)
-           else
-             CheckoutItem.new(product, 1)
-           end
-
+    item = build_item(product_code)
     add_item(item)
+    apply_rules
+    collect_totals
   end
 
-  def total
-  end
-
-  def subtotal
-    items.values.reduce(0) { |total, item| total + item.price }
+  def find_item_by_product_code(product_code)
+    items[product_code]
   end
 
   private
@@ -36,8 +28,24 @@ class Checkout
     items[item.product_code] = item
   end
 
-  def find_item_by_product(product)
-    items[product.code]
+  def build_item(product_code)
+    product = @product_repository.find(product_code)
+    existing_item = find_item_by_product_code(product.code)
+
+    if existing_item
+      CheckoutItem.new(product, existing_item.quantity + 1)
+    else
+      CheckoutItem.new(product, 1)
+    end
+  end
+
+  def apply_rules
+    @discount = discount_rules.reduce(0) {|total, rule| total + rule.apply(self) }
+  end
+
+  def collect_totals
+    @subtotal = items.values.reduce(0) { |total, item| total + item.price }
+    @total = @subtotal - @discount
   end
 
   def valid_product_code?(code)
