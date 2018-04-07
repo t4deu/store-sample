@@ -4,6 +4,6 @@ class Product
   def initialize(code, name, price)
     @code = code.to_sym
     @name = name
-    @price = price
+    @price = Money.new(price)
   end
 end

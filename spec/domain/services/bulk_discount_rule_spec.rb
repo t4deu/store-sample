@@ -6,7 +6,7 @@ describe BulkDiscountRule do
 
       scan_items(checkout, "TSHIRT", "TSHIRT", "TSHIRT", "VOUCHER", "TSHIRT")
 
-      expect(checkout.total).to eq(4500)
+      expect(checkout.total.cents).to eq(4500)
     end
   end
 end

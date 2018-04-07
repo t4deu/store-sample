@@ -5,15 +5,15 @@ describe BuyGetFreeDiscountRule do
 
       checkout = Checkout.new([rule])
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER")
-      expect(checkout.total).to eq(2500)
+      expect(checkout.total.cents).to eq(2500)
 
       checkout = Checkout.new([rule])
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "VOUCHER")
-      expect(checkout.total).to eq(3000)
+      expect(checkout.total.cents).to eq(3000)
 
       checkout = Checkout.new([rule])
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "VOUCHER", "VOUCHER", "VOUCHER")
-      expect(checkout.total).to eq(3000)
+      expect(checkout.total.cents).to eq(3000)
     end
   end
 end

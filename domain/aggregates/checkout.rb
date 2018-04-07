@@ -1,5 +1,3 @@
-require "money"
-
 class Checkout
   attr_reader :items, :subtotal, :total
 

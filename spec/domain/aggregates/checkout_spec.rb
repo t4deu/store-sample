@@ -53,7 +53,7 @@ describe Checkout do
 
       scan_items(checkout, "TSHIRT", "TSHIRT")
 
-      expect(checkout.subtotal).to eq(4000)
+      expect(checkout.subtotal.cents).to eq(4000)
     end
 
     it "sums the subtotal for multiple items with different types" do
@@ -61,7 +61,7 @@ describe Checkout do
 
       scan_items(checkout, "MUG", "TSHIRT", "VOUCHER")
 
-      expect(checkout.subtotal).to eq(3250)
+      expect(checkout.subtotal.cents).to eq(3250)
     end
   end
 
@@ -71,14 +71,14 @@ describe Checkout do
 
       scan_items(checkout, "VOUCHER", "TSHIRT", "MUG")
 
-      expect(checkout.total).to eq(3250)
+      expect(checkout.total.cents).to eq(3250)
     end
 
     it "sums the total when applying 2x1 discount rules" do
       checkout = Checkout.new(pricing_rules)
 
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER")
-      expect(checkout.total).to eq(2500)
+      expect(checkout.total.cents).to eq(2500)
     end
 
     it "sums the total when applying bulk discount rules" do
@@ -86,7 +86,7 @@ describe Checkout do
 
       scan_items(checkout, "TSHIRT", "TSHIRT", "TSHIRT", "VOUCHER", "TSHIRT")
 
-      expect(checkout.total).to eq(8100)
+      expect(checkout.total.cents).to eq(8100)
     end
 
     it "sums the total when applying multiple pricing rules" do
@@ -94,7 +94,7 @@ describe Checkout do
 
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "MUG", "TSHIRT", "TSHIRT")
 
-      expect(checkout.total).to eq(7450)
+      expect(checkout.total.cents).to eq(7450)
     end
   end
 
