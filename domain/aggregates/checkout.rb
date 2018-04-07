@@ -1,5 +1,9 @@
 class Checkout
+  extend Forwardable
+
   attr_reader :items, :subtotal, :total
+
+  def_delegator :@items, :empty?
 
   def initialize(discount_rules = {})
     @items = {}

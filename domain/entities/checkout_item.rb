@@ -1,5 +1,3 @@
-require "forwardable"
-
 class CheckoutItem
   extend Forwardable
 
