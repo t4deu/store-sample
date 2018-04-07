@@ -5,17 +5,9 @@ class BuyGetFreeDiscountRule
     @get_qty = get_qty
   end
 
-  def apply(checkout)
-    applicable_item = checkout.find_item_by_product_code(@code)
-
-    if valid?(applicable_item)
-      discount(applicable_item)
-    else
-      0
-    end
+  def applicable_item(checkout)
+    checkout.find_item_by_product_code(@code)
   end
-
-  private
 
   def valid?(item)
     item && item.quantity >= @buy_qty

@@ -1,11 +1,11 @@
 require "money"
 
 class Checkout
-  attr_reader :items, :subtotal, :total, :discount_rules
+  attr_reader :items, :subtotal, :total
 
   def initialize(discount_rules = {})
     @items = {}
-    @discount_rules = discount_rules
+    @discounter = Discounter.new(rules: discount_rules)
     @product_repository = ProductsRepository.new
   end
 
@@ -14,7 +14,7 @@ class Checkout
 
     item = build_item(product_code)
     add_item(item)
-    apply_rules
+    collect_discount
     collect_totals
   end
 
@@ -39,8 +39,8 @@ class Checkout
     end
   end
 
-  def apply_rules
-    @discount = discount_rules.reduce(0) {|total, rule| total + rule.apply(self) }
+  def collect_discount
+    @discount = @discounter.apply_rules(self)
   end
 
   def collect_totals

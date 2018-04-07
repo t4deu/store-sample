@@ -67,7 +67,7 @@ describe Checkout do
 
   describe "#total" do
     it "sums the total when discount rule are not applicable" do
-      checkout = Checkout.new(pricin_rules)
+      checkout = Checkout.new(pricing_rules)
 
       scan_items(checkout, "VOUCHER", "TSHIRT", "MUG")
 
@@ -79,6 +79,22 @@ describe Checkout do
 
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER")
       expect(checkout.total).to eq(2500)
+    end
+
+    it "sums the total when applying bulk discount rules" do
+      checkout = Checkout.new(pricing_rules)
+
+      scan_items(checkout, "TSHIRT", "TSHIRT", "TSHIRT", "VOUCHER", "TSHIRT")
+
+      expect(checkout.total).to eq(8100)
+    end
+
+    it "sums the total when applying multiple pricing rules" do
+      checkout = Checkout.new(pricing_rules)
+
+      scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "MUG", "TSHIRT", "TSHIRT")
+
+      expect(checkout.total).to eq(7450)
     end
   end
 
@@ -99,13 +115,10 @@ describe Checkout do
     end
   end
 
-  def scan_items(checkout, *product_codes)
-    product_codes.each { |code| checkout.scan(code) }
-  end
-
   def pricing_rules
     [
       BuyGetFreeDiscountRule.new(:VOUCHER, buy_qty: 2, get_qty: 1),
+      BulkDiscountRule.new(:TSHIRT, qty: 3, discount: 100),
     ]
   end
 end
