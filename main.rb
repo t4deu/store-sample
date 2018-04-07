@@ -1,4 +1,5 @@
 require_relative "domain/aggregates/checkout"
+require_relative "domain/values/money"
 require_relative "domain/entities/checkout_item"
 require_relative "domain/entities/product"
 require_relative "domain/services/bulk_discount_rule"

@@ -4,9 +4,9 @@ describe BulkDiscountRule do
       rule = BulkDiscountRule.new(:TSHIRT, qty: 4, discount: 1000)
       checkout = Checkout.new([rule])
 
-      scan_items(checkout, "TSHIRT", "TSHIRT", "TSHIRT", "VOUCHER", "TSHIRT")
+      scan_items(checkout, "TSHIRT", "TSHIRT", "TSHIRT", "TSHIRT")
 
-      expect(checkout.total).to eq(4500)
+      expect(checkout.total).to eq(40_00)
     end
   end
 end

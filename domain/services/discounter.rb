@@ -1,11 +1,12 @@
 class Discounter
   attr_reader :rules
+
   def initialize(rules: [])
     @rules = rules
   end
 
   def apply_rules(checkout)
-    rules.reduce(0) {|total, rule| total + apply_rule(rule, checkout) }
+    rules.reduce(0) { |total, rule| total + apply_rule(rule, checkout) }
   end
 
   private

@@ -1,5 +1,3 @@
-require "money"
-
 class Checkout
   attr_reader :items, :subtotal, :total
 
@@ -44,11 +42,14 @@ class Checkout
   end
 
   def collect_totals
-    @subtotal = items.values.reduce(0) { |total, item| total + item.price }
-    @total = @subtotal - @discount
+    subtotal = items.values.reduce(0) { |total, item| total + item.price }
+    total = subtotal - @discount
+
+    @subtotal = Money.new(subtotal)
+    @total = Money.new(total)
   end
 
   def valid_product_code?(code)
-    !code.nil? && %i{TSHIRT MUG VOUCHER}.include?(code.to_sym)
+    !code.nil? && %i[TSHIRT MUG VOUCHER].include?(code.to_sym)
   end
 end
