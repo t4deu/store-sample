@@ -15,9 +15,5 @@ describe BuyGetFreeDiscountRule do
       scan_items(checkout, "VOUCHER", "TSHIRT", "VOUCHER", "VOUCHER", "VOUCHER", "VOUCHER", "VOUCHER")
       expect(checkout.total).to eq(3000)
     end
-
-    def scan_items(checkout, *product_codes)
-      product_codes.each { |code| checkout.scan(code) }
-    end
   end
 end
